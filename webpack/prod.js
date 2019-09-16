@@ -6,8 +6,8 @@ var config = module.exports = Object.assign({}, base)
 
 Object.assign(config, {
   entry: {
-    'vue-at': ['@babel/polyfill','./src/At.vue'],
-    'vue-at-textarea': ['@babel/polyfill', './src/AtTextarea.vue']
+    'vue-at': './src/At.vue',
+    'vue-at-textarea': './src/AtTextarea.vue'
   },
   output: {
     path: path.resolve(__dirname, '../dist'),

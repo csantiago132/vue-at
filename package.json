@@ -1,7 +1,7 @@
 {
   "name": "@csantiago132/vue-at",
   "description": "At.js for Vue",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "author": "Carlos Santiago",
   "repository": "https://github.com/csantiago132/vue-at.git",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "main": "dist/vue-at.js",
   "dependencies": {
-    "@babel/polyfill": "^7.6.0"
+    "@babel/polyfill": "^7.6.0",
+    "custom-event-polyfill": "^1.0.7"
   },
   "peerDependencies": {
     "vue": "2.x"
