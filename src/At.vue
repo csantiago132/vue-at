@@ -187,7 +187,7 @@ export default {
       }
     },
     handleItemClick (e) {
-      this.selectByMouse(e)
+        this.handleKeyDown(e)
       this.insertItem()
     },
     handleDelete (e) {
@@ -269,6 +269,7 @@ export default {
           e.stopPropagation()
           return
         }
+
         if (e.keyCode === 27) { // esc
           this.closePanel()
           return
