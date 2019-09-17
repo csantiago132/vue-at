@@ -129,6 +129,13 @@ export default {
         })
       }
     },
+      'atwho.autoScroll' (index) {
+      if (index) { // cur index exists
+        this.$nextTick(() => {
+          this.scrollToCur(true)
+        })
+      }
+    },
     listMembers (nextValue) {
         this.members = nextValue
     },
@@ -373,7 +380,8 @@ export default {
           list: list.length > 0 ? list : [],
           x: rect.left,
           y: rect.top - 4,
-          cur: 0 // todo: 尽可能记录
+          cur: 0, // todo: 尽可能记录,
+            autoScroll: false
         }
       }
       if (this.atwho) {
@@ -383,7 +391,7 @@ export default {
       }
     },
 
-    scrollToCur () {
+    scrollToCur (autoScroll = false) {
         /**
          * checks if li element li.atwho-li.atwho-cur exists
          * we need to check because if list is empty, we display empty message
@@ -396,15 +404,14 @@ export default {
             if (this.$refs.cur[0]) {
                 const curEl = this.$refs.cur[0]
                 const scrollParent = curEl.parentElement.parentElement // .atwho-view
-                scrollIntoView(curEl, scrollParent)
+                if(autoScroll){
+                    scrollIntoView(curEl, scrollParent)
+                }
             }
         }
     },
     selectByMouse (e) {
-      const el = closest(e.target, d => {
-        return d.getAttribute('data-index')
-      })
-      const cur = +el.getAttribute('data-index')
+      const cur = Number(e.target.getAttribute('data-index'))
       this.atwho = {
         ...this.atwho,
         cur
@@ -417,9 +424,14 @@ export default {
         ? (cur + offset + list.length) % list.length
         : Math.max(0, Math.min(cur + offset, list.length - 1))
       this.atwho = {
-        ...this.atwho,
-        cur: nextCur
+          ...this.atwho,
+          cur: nextCur,
+          autoScroll: true
       }
+        //this.scrollToCurArrowUpDown()
+        this.$nextTick(() => {
+            this.scrollToCur(true)
+        })
     },
 
     // todo: 抽离成库并测试

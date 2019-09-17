@@ -81,6 +81,7 @@
   max-width: 180px;
   max-height: 200px;
   overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   &::-webkit-scrollbar {
     width: 11px;
     height: 11px;
