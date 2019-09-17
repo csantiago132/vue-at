@@ -21,6 +21,14 @@
                 return null;
             }
         },
+        mounted(){
+            const el = this.$el.querySelector('textarea');
+            el.addEventListener("input", () => {});
+        },
+        destroyed(){
+            const el = this.$el.querySelector('textarea');
+            el.removeEventListener("input", () => {});
+        },
         methods: {
             handleValueUpdate(value) {
                 const el = this.$el.querySelector('textarea');
@@ -42,10 +50,8 @@
                 CustomEvent.prototype = window.Event.prototype;
 
                 window.CustomEvent = CustomEvent;
-                el.addEventListener("input", function(e){
-                    console.log(); //results 50
-                });
-               el.dispatchEvent(CustomEvent('input'));
+
+                el.dispatchEvent(CustomEvent('input'));
             },
 
             handleDelete(e) {
