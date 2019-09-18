@@ -16,7 +16,7 @@ export default {
     },
     at: {
       type: String,
-      default: null
+      default: '#'
     },
     ats: {
       type: Array,
@@ -40,7 +40,7 @@ export default {
     },
     avoidEmail: {
       type: Boolean,
-      default: true
+      default: false
     },
     showUnique: {
       type: Boolean,
@@ -50,6 +50,11 @@ export default {
       type: Boolean,
       default: true
     },
+      insertProperty: {
+          type: String,
+          default: '',
+          required: true
+      },
       listMembers: {
           type: Array,
           default: () => []
@@ -59,16 +64,8 @@ export default {
           default: 'There is no one to tag'
       },
     nameKey: {
-      type: String,
+      type: [String, Array],
       default: ''
-    },
-    filterMatch: {
-      type: Function,
-      default: (name = this.value, chunk, at) => {
-        // match at lower-case
-        return name.toLowerCase()
-          .indexOf(chunk.toLowerCase()) > -1
-      }
     },
     deleteMatch: {
       type: Function,
@@ -137,9 +134,10 @@ export default {
       }
     },
     listMembers (nextValue) {
-        this.members = nextValue
+        this.members = [ ...this.members, ...nextValue]
     },
     value (value, oldValue) {
+        console.log(oldValue)
       if (this.bindsValue) {
         this.handleValueUpdate(value)
       }
@@ -155,13 +153,27 @@ export default {
   },
 
   methods: {
+      filterMatch(name, chunk) {
+          const item = name.trim()
+          return item.toLowerCase().indexOf(chunk.toLowerCase()) > -1
+      },
     itemName (v) {
         /**
          * checks if list is empty, we return empty string
          */
         if (v) {
             const { nameKey } = this
-            return nameKey ? v[nameKey] : v
+            if (Array.isArray(nameKey)) {
+                let values = []
+                let listOfProperties = []
+                for (const item of nameKey) {
+                    listOfProperties.push(v[item])
+                }
+                return values.concat(listOfProperties)
+            }
+            if (typeof nameKey === 'string' || nameKey instanceof String) {
+                return nameKey ? v[nameKey] : v
+            }
         }
         return ''
     },
