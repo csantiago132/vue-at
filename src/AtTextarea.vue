@@ -83,7 +83,7 @@
 
                 const text = el.value.slice(0, el.selectionEnd);
                 if (text) {
-                    const { atItems, avoidEmail, allowSpaces } = this;
+                    const { atItems, avoidEmail, allowSpaces, nameKey } = this;
                     let show = true;
                     const { at, index } = getAtAndIndex(text, atItems);
                     if (index < 0) show = false;
@@ -104,14 +104,31 @@
                         this.closePanel();
                     } else {
                         const { members, filterMatch, itemName } = this;
+                        let filtered = []
+                        let matched = []
+
                         if (!keep) {
                             // fixme: should be consistent with At.vue
                             this.$emit('at', chunk);
                         }
-                        const matched = members.filter(v => {
-                            const name = itemName(v);
-                            return filterMatch(name, chunk, at);
-                        });
+
+                        if (Array.isArray(nameKey)) {
+                            members.forEach(v => {
+                                const name = itemName(v);
+                                for (const property of name) {
+                                    if (filterMatch(property, chunk)) {
+                                        filtered.push(v)
+                                    }
+                                }
+                            });
+                            matched = [...new Set(filtered)];
+                        }
+                        if (typeof nameKey === 'string' || nameKey instanceof String) {
+                            matched = members.filter(v => {
+                                const name = itemName(v);
+                                return filterMatch(name, chunk, at);
+                            });
+                        }
                         if (matched.length) {
                             this.openPanel(matched, chunk, index, at, keep);
                         } else {
@@ -166,7 +183,8 @@
                 el.selectionStart = start;
                 el.focus(); // textarea必须focus回来
                 const curItem = list[cur];
-                const t = itemName(curItem) + suffix;
+                const selected = curItem[this.insertProperty]
+                const t = selected + suffix;
                 this.insertText(t, el);
                 this.$emit('insert', curItem);
                 this.handleInput();

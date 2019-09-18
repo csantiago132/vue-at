@@ -1,69 +1,73 @@
 <template>
   <div id="app">
-    <at :list-members="membersEmpty" name-key="name" v-model="html">
-      <!-- custom: same as default slot -->
-      <!-- <template v-slot:item="s">
-        <span v-text="s.item"></span>
-      </template> -->
+<!--    <at :list-members="membersEmpty" name-key="name" v-model="html">-->
+<!--      &lt;!&ndash; custom: same as default slot &ndash;&gt;-->
+<!--      &lt;!&ndash; <template v-slot:item="s">-->
+<!--        <span v-text="s.item"></span>-->
+<!--      </template> &ndash;&gt;-->
 
-      <!-- custom: with avatars -->
-      <template v-slot:item="s">
-        <img class="avatar" :src="s.item.avatar">
-        <span v-text="s.item.name"></span>
-      </template>
+<!--      &lt;!&ndash; custom: with avatars &ndash;&gt;-->
+<!--      <template v-slot:item="s">-->
+<!--        <img class="avatar" :src="s.item.avatar">-->
+<!--        <span v-text="s.item.name"></span>-->
+<!--        <span v-text="s.item.lastName"></span>-->
+<!--      </template>-->
 
-      <div class="editor"
-        contenteditable></div>
-    </at>
+<!--      <div class="editor"-->
+<!--        contenteditable></div>-->
+<!--    </at>-->
 
-    <at :list-members="members" name-key="name" v-model="html2">
-      <template v-slot:embeddedItem="s">
-        <span><span class="tag"><img class="avatar" :src="s.current.avatar">{{ s.current.name }}</span></span>
-      </template>
+<!--    <at :list-members="members" name-key="name" v-model="html2">-->
+<!--      <template v-slot:embeddedItem="s">-->
+<!--        <span><span class="tag"><img class="avatar" :src="s.current.avatar">{{ s.current.name }}</span></span>-->
+<!--      </template>-->
 
-      <!-- custom: with avatars -->
-      <template v-slot:item="s">
-        <img :src="s.item.avatar">
-        <span v-text="s.item.name"></span>
-      </template>
+<!--      &lt;!&ndash; custom: with avatars &ndash;&gt;-->
+<!--      <template v-slot:item="s">-->
+<!--        <img :src="s.item.avatar">-->
+<!--        <span v-text="s.item.name"></span>-->
+<!--      </template>-->
 
-      <div class="editor"
-        contenteditable></div>
-    </at>
-
-    <br />
-
-    <at-ta :list-members="members" name-key="name" v-model="text">
-      <!-- custom: with avatars -->
-      <template v-slot:item="s">
-        <img :src="s.item.avatar">
-        <span v-text="s.item.name"></span>
-      </template>
-
-      <textarea class="editor"></textarea>
-    </at-ta>
-
-    <at-ta :list-members="members" name-key="name">
-      <!-- custom: with avatars -->
-      <template v-slot:item="s">
-        <img :src="s.item.avatar">
-        <span v-text="s.item.name"></span>
-      </template>
-
-      <v-textarea class="vuetify-editor" v-model="text2"></v-textarea>
-    </at-ta>
+<!--      <div class="editor"-->
+<!--        contenteditable></div>-->
+<!--    </at>-->
 
     <br />
 
-    <at-ta :list-members="members" name-key="name">
+    <h1>HERE</h1>
+      <pre>{{test}}</pre>
+    <at-ta :list-members="test" :name-key="searchBy"  insert-property="lastName">
       <!-- custom: with avatars -->
       <template v-slot:item="s">
         <img :src="s.item.avatar">
         <span v-text="s.item.name"></span>
+        <span v-text="s.item.email"></span>
       </template>
 
-      <el-input type="textarea" v-model="text3" class="element-editor"></el-input>
+        <el-input type="textarea" v-model="text" class="element-editor"></el-input>
     </at-ta>
+
+<!--    <at-ta :list-members="members" name-key="name">-->
+<!--      &lt;!&ndash; custom: with avatars &ndash;&gt;-->
+<!--      <template v-slot:item="s">-->
+<!--        <img :src="s.item.avatar">-->
+<!--        <span v-text="s.item.name"></span>-->
+<!--      </template>-->
+
+<!--      <v-textarea class="vuetify-editor" v-model="text2"></v-textarea>-->
+<!--    </at-ta>-->
+
+    <br />
+
+<!--    <at-ta :list-members="members" name-key="name">-->
+<!--      &lt;!&ndash; custom: with avatars &ndash;&gt;-->
+<!--      <template v-slot:item="s">-->
+<!--        <img :src="s.item.avatar">-->
+<!--        <span v-text="s.item.name"></span>-->
+<!--      </template>-->
+
+<!--      <el-input type="textarea" v-model="text3" class="element-editor"></el-input>-->
+<!--    </at-ta>-->
   </div>
 </template>
 
@@ -73,6 +77,7 @@
 // import AtTa from '../dist/vue-at-textarea'
 import At from './At.vue'
 import AtTa from './AtTextarea.vue'
+import { dataJson } from '../static/data'
 
 let membersEmpty = []
 let members = [
@@ -88,6 +93,7 @@ let members = [
 ]
 members = members.map((v, i) => {
   return {
+    lastName: `${i}_lastName_${i}_${v}`,
     avatar: `https://randomuser.me/api/portraits/men/${i % 5}.jpg`,
     name: v
   }
@@ -130,6 +136,8 @@ Playback - Video player.
     data.text2 = data.text
     data.text3 = data.text
     data.html2 = data.html
+    data.searchBy = ["name", "email"]
+      data.test = dataJson
     return data
   }
 }
